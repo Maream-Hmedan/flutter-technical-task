@@ -27,7 +27,7 @@ class AppSize {
 
   // Text
   static double get smallText => 10.sp;
-  static double get bodyText => 12.sp;
+  static double get bodyText => 13.5.sp;
   static double get mediumText => 14.sp;
   static double get titleText => 17.sp;
   static double get largeTitleText => 21.sp;

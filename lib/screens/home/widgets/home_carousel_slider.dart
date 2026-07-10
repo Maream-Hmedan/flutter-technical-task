@@ -4,8 +4,8 @@ import 'package:flutter_technical_task/configuration/app_colors.dart';
 import 'package:flutter_technical_task/configuration/app_size.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class CarouselSliderImage extends StatefulWidget {
-  const CarouselSliderImage({
+class HomeCarouselSlider extends StatefulWidget {
+  const HomeCarouselSlider({
     super.key,
     required this.images,
     this.height,
@@ -21,10 +21,10 @@ class CarouselSliderImage extends StatefulWidget {
   final double borderRadius;
 
   @override
-  State<CarouselSliderImage> createState() => _CarouselSliderImageState();
+  State<HomeCarouselSlider> createState() => _HomeCarouselSliderState();
 }
 
-class _CarouselSliderImageState extends State<CarouselSliderImage> {
+class _HomeCarouselSliderState extends State<HomeCarouselSlider> {
   int currentIndex = 0;
 
   @override
