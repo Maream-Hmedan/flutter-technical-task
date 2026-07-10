@@ -44,7 +44,7 @@ Flutter technical task for a product catalog and shopping cart application.
 
 | Empty Favorites | Product Details |
 | ---------------- | --------------- |
-| <img src="screenshots/favorite_empty.jpeg" width="250"> | <img src="screenshots/product_details.jpeg" width="250"> |
+| <img src="screenshots/favarite_empty.jpeg" width="250"> | <img src="screenshots/product_details.jpeg" width="250"> |
 
 ### Cart
 
