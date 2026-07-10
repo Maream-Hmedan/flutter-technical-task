@@ -13,8 +13,10 @@ class ProductController extends ChangeNotifier {
   ApiStatus apiStatus = ApiStatus.loading;
 
   List<ProductResponse> products = [];
+  List<ProductResponse> filteredProducts = [];
 
   String errorMessage = '';
+  String searchQuery = '';
 
   Future<void> getProducts() async {
     apiStatus = ApiStatus.loading;
@@ -23,6 +25,7 @@ class ProductController extends ChangeNotifier {
 
     try {
       products = await _repository.getProducts();
+      filteredProducts = List<ProductResponse>.from(products);
 
       apiStatus = products.isEmpty ? ApiStatus.empty : ApiStatus.success;
     } catch (error) {
@@ -38,16 +41,46 @@ class ProductController extends ChangeNotifier {
     apiStatus = ApiStatus.loading;
     errorMessage = '';
     notifyListeners();
+
     try {
       products = await _repository.getProducts();
 
-      apiStatus = products.isEmpty ? ApiStatus.empty : ApiStatus.success;
+      _applySearch();
+
+      apiStatus = products.isEmpty
+          ? ApiStatus.empty
+          : ApiStatus.success;
     } catch (error) {
       errorMessage = error.toString().replaceFirst('Exception: ', '');
-
       apiStatus = ApiStatus.error;
     }
 
     notifyListeners();
+  }
+
+  void searchProducts(String value) {
+    searchQuery = value.trim();
+    _applySearch();
+    notifyListeners();
+  }
+
+  void clearSearch() {
+    searchQuery = '';
+    filteredProducts = List<ProductResponse>.from(products);
+    notifyListeners();
+  }
+
+
+  void _applySearch() {
+    if (searchQuery.isEmpty) {
+      filteredProducts = List<ProductResponse>.from(products);
+      return;
+    }
+
+    final String query = searchQuery.toLowerCase();
+
+    filteredProducts = products.where((product) {
+      return product.title.toLowerCase().contains(query);
+    }).toList();
   }
 }

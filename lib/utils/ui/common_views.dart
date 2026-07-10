@@ -125,4 +125,63 @@ class CommonViews {
       ),
     );
   }
+
+  Widget customTextField({
+    TextEditingController? controller,
+    String? hintText,
+    Widget? prefixIcon,
+    Widget? suffixIcon,
+    ValueChanged<String>? onChanged,
+    TextInputType keyboardType = TextInputType.text,
+    bool readOnly = false,
+    VoidCallback? onTap,
+  }) {
+    return SizedBox(
+      height: 6.5.h,
+      child: TextField(
+        controller: controller,
+        onChanged: onChanged,
+        keyboardType: keyboardType,
+        readOnly: readOnly,
+        onTap: onTap,
+        style: _textStyle(
+          fontSize: 13.sp,
+        ),
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: _textStyle(
+            color: AppColors.textSecondary,
+            fontSize: 12.sp,
+          ),
+          prefixIcon: prefixIcon,
+          suffixIcon: suffixIcon,
+          filled: true,
+          fillColor: AppColors.surfaceColor,
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 4.w,
+            vertical: 1.6.h,
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14.sp),
+            borderSide: BorderSide(
+              color: AppColors.borderColor,
+            ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14.sp),
+            borderSide: BorderSide(
+              color: AppColors.borderColor,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14.sp),
+            borderSide: BorderSide(
+              color: AppColors.primaryColor,
+              width: 1.5,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

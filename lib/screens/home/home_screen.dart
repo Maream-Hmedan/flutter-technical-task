@@ -3,6 +3,7 @@ import 'package:flutter_technical_task/configuration/app_assets.dart';
 import 'package:flutter_technical_task/configuration/app_colors.dart';
 import 'package:flutter_technical_task/configuration/app_size.dart';
 import 'package:flutter_technical_task/screens/home/widgets/home_carousel_slider.dart';
+import 'package:flutter_technical_task/screens/home/widgets/home_search_field.dart';
 import 'package:flutter_technical_task/screens/product/controller/product_controller.dart';
 import 'package:flutter_technical_task/screens/product/model/product_response.dart';
 import 'package:flutter_technical_task/utils/ui/app_cached_image.dart';
@@ -20,27 +21,33 @@ class HomeScreen extends StatelessWidget {
       child: Scaffold(
         body: Consumer<ProductController>(
           builder: (context, controller, child) {
-            return RefreshIndicator(
-              color: AppColors.primaryColor,
-              onRefresh: controller.refreshProducts,
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: Column(
-                  children: [
-                    SizedBox(height: AppSize.homeTopSpacing),
+            return GestureDetector(
+              onTap: () {
+                FocusManager.instance.primaryFocus?.unfocus();
+              },
+              child: RefreshIndicator(
+                color: AppColors.primaryColor,
+                onRefresh: controller.refreshProducts,
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Column(
+                    children: [
+                      SizedBox(height: AppSize.homeTopSpacing),
 
-                    const HomeCarouselSlider(
-                      images: [
-                        firstHomeSlide,
-                        secondHomeSlide,
-                        thirdHomeSlide,
-                      ],
-                    ),
+                      const HomeCarouselSlider(
+                        images: [
+                          firstHomeSlide,
+                          secondHomeSlide,
+                          thirdHomeSlide,
+                        ],
+                      ),
 
-                    SizedBox(height: AppSize.mediumSpacing),
+                      SizedBox(height: AppSize.mediumSpacing),
+                      HomeSearchField(),
 
-                    _buildProductsSection(controller),
-                  ],
+                      _buildProductsSection(controller),
+                    ],
+                  ),
                 ),
               ),
             );
@@ -60,7 +67,7 @@ class HomeScreen extends StatelessWidget {
           icon: Icons.inventory_2_outlined,
           title: 'No products found',
           description:
-          'There are no products available right now. Please check again later.',
+              'There are no products available right now. Please check again later.',
         );
 
       case ApiStatus.error:
@@ -83,7 +90,7 @@ class HomeScreen extends StatelessWidget {
             horizontal: AppSize.pagePadding,
             vertical: AppSize.smallSpacing,
           ),
-          itemCount: controller.products.length,
+          itemCount: controller.filteredProducts.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             crossAxisSpacing: 12,
@@ -91,7 +98,7 @@ class HomeScreen extends StatelessWidget {
             childAspectRatio: 0.62,
           ),
           itemBuilder: (context, index) {
-            final ProductResponse product = controller.products[index];
+            final ProductResponse product = controller.filteredProducts[index];
 
             return _buildProductCard(
               product: product,
@@ -125,9 +132,7 @@ class HomeScreen extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               color: AppColors.whiteColor,
-              borderRadius: BorderRadius.circular(
-                AppSize.productCardRadius,
-              ),
+              borderRadius: BorderRadius.circular(AppSize.productCardRadius),
             ),
           ),
         );
@@ -150,15 +155,10 @@ class HomeScreen extends StatelessWidget {
       ),
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.symmetric(
-          horizontal: 6.w,
-          vertical: 4.h,
-        ),
+        padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 4.h),
         decoration: BoxDecoration(
           color: AppColors.primaryLight,
-          borderRadius: BorderRadius.circular(
-            AppSize.productCardRadius,
-          ),
+          borderRadius: BorderRadius.circular(AppSize.productCardRadius),
           border: Border.all(
             color: AppColors.primaryColor.withValues(alpha: 0.18),
           ),
@@ -173,8 +173,9 @@ class HomeScreen extends StatelessWidget {
                 color: AppColors.whiteColor,
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: (iconColor ?? AppColors.primaryColor)
-                      .withValues(alpha: 0.20),
+                  color: (iconColor ?? AppColors.primaryColor).withValues(
+                    alpha: 0.20,
+                  ),
                 ),
               ),
               child: Icon(
@@ -229,12 +230,8 @@ class HomeScreen extends StatelessWidget {
       padding: EdgeInsets.all(2.5.w),
       decoration: BoxDecoration(
         color: AppColors.whiteColor,
-        borderRadius: BorderRadius.circular(
-          AppSize.productCardRadius,
-        ),
-        border: Border.all(
-          color: AppColors.borderColor,
-        ),
+        borderRadius: BorderRadius.circular(AppSize.productCardRadius),
+        border: Border.all(color: AppColors.borderColor),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -291,10 +288,7 @@ class HomeScreen extends StatelessWidget {
           CommonViews().customButton(
             height: 5.h,
             borderRadius: 10,
-            padding: EdgeInsets.symmetric(
-              horizontal: 2.w,
-              vertical: 0.8.h,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.8.h),
             onTap: onAddToCart,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
