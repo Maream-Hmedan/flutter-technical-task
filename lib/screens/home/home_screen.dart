@@ -6,6 +6,8 @@ import 'package:flutter_technical_task/screens/home/widgets/home_carousel_slider
 import 'package:flutter_technical_task/screens/home/widgets/home_search_field.dart';
 import 'package:flutter_technical_task/screens/product/controller/product_controller.dart';
 import 'package:flutter_technical_task/screens/product/model/product_response.dart';
+import 'package:flutter_technical_task/screens/product_details/product_details_screen.dart';
+import 'package:flutter_technical_task/utils/helpers/app_navigation.dart';
 import 'package:flutter_technical_task/utils/ui/app_cached_image.dart';
 import 'package:flutter_technical_task/utils/ui/common_views.dart';
 import 'package:provider/provider.dart';
@@ -102,6 +104,13 @@ class HomeScreen extends StatelessWidget {
 
             return _buildProductCard(
               product: product,
+              onCardTap: () {
+                AppNavigator.of(context).push(
+                  ProductDetailsScreen(
+                    product: product,
+                  ),
+                );
+              },
               onFavoriteTap: () {},
               onAddToCart: () {},
             );
@@ -223,92 +232,96 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildProductCard({
     required ProductResponse product,
+    required VoidCallback onCardTap,
     required VoidCallback onFavoriteTap,
     required VoidCallback onAddToCart,
   }) {
-    return Container(
-      padding: EdgeInsets.all(2.5.w),
-      decoration: BoxDecoration(
-        color: AppColors.whiteColor,
-        borderRadius: BorderRadius.circular(AppSize.productCardRadius),
-        border: Border.all(color: AppColors.borderColor),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: AppCachedImage(
-              imageUrl: product.image,
-              width: double.infinity,
-              fit: BoxFit.contain,
-              radius: 10,
-            ),
-          ),
-
-          SizedBox(height: AppSize.smallSpacing),
-
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: CommonViews().customText(
-                  textContent: product.title,
-                  maxLines: 4,
-                  overflow: TextOverflow.ellipsis,
-                  fontSize: AppSize.bodyText,
-                  fontWeight: FontWeight.w600,
-                  textColor: AppColors.textPrimary,
-                ),
+    return InkWell(
+      onTap: onCardTap,
+      child: Container(
+        padding: EdgeInsets.all(2.5.w),
+        decoration: BoxDecoration(
+          color: AppColors.whiteColor,
+          borderRadius: BorderRadius.circular(AppSize.productCardRadius),
+          border: Border.all(color: AppColors.borderColor),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: AppCachedImage(
+                imageUrl: product.image,
+                width: double.infinity,
+                fit: BoxFit.contain,
+                radius: 10,
               ),
+            ),
 
-              SizedBox(width: 1.w),
+            SizedBox(height: AppSize.smallSpacing),
 
-              InkWell(
-                borderRadius: BorderRadius.circular(20.sp),
-                onTap: onFavoriteTap,
-                child: Padding(
-                  padding: EdgeInsets.all(0.5.h),
-                  child: Icon(
-                    Icons.favorite_border_rounded,
-                    color: AppColors.textSecondary,
-                    size: 19.sp,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: CommonViews().customText(
+                    textContent: product.title,
+                    maxLines: 4,
+                    overflow: TextOverflow.ellipsis,
+                    fontSize: AppSize.bodyText,
+                    fontWeight: FontWeight.w600,
+                    textColor: AppColors.textPrimary,
                   ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(height: 0.7.h),
-          CommonViews().customText(
-            textContent: '\$${product.price.toStringAsFixed(2)}',
-            fontSize: AppSize.bodyText,
-            fontWeight: FontWeight.w700,
-            textColor: AppColors.primaryColor,
-          ),
-          SizedBox(height: AppSize.smallSpacing),
-          CommonViews().customButton(
-            height: 5.h,
-            borderRadius: 10,
-            padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.8.h),
-            onTap: onAddToCart,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.shopping_cart_outlined,
-                  size: 17.sp,
-                  color: AppColors.whiteColor,
-                ),
-                SizedBox(width: 1.5.w),
-                CommonViews().customText(
-                  textContent: 'Add to Cart',
-                  fontSize: AppSize.mediumText,
-                  fontWeight: FontWeight.w600,
-                  textColor: AppColors.whiteColor,
+
+                SizedBox(width: 1.w),
+
+                InkWell(
+                  borderRadius: BorderRadius.circular(20.sp),
+                  onTap: onFavoriteTap,
+                  child: Padding(
+                    padding: EdgeInsets.all(0.5.h),
+                    child: Icon(
+                      Icons.favorite_border_rounded,
+                      color: AppColors.textSecondary,
+                      size: 19.sp,
+                    ),
+                  ),
                 ),
               ],
             ),
-          ),
-        ],
+            SizedBox(height: 0.7.h),
+            CommonViews().customText(
+              textContent: '\$${product.price.toStringAsFixed(2)}',
+              fontSize: AppSize.bodyText,
+              fontWeight: FontWeight.w700,
+              textColor: AppColors.primaryColor,
+            ),
+            SizedBox(height: AppSize.smallSpacing),
+            CommonViews().customButton(
+              height: 5.h,
+              borderRadius: 10,
+              padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.8.h),
+              onTap: onAddToCart,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.shopping_cart_outlined,
+                    size: 17.sp,
+                    color: AppColors.whiteColor,
+                  ),
+                  SizedBox(width: 1.5.w),
+                  CommonViews().customText(
+                    textContent: 'Add to Cart',
+                    fontSize: AppSize.mediumText,
+                    fontWeight: FontWeight.w600,
+                    textColor: AppColors.whiteColor,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
