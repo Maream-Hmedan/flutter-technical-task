@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_technical_task/configuration/app_assets.dart';
 import 'package:flutter_technical_task/configuration/app_colors.dart';
+import 'package:flutter_technical_task/configuration/app_size.dart';
 import 'package:flutter_technical_task/screens/bottom_navigation_bar/bottom_navigation_bar_screen.dart';
 import 'package:flutter_technical_task/utils/helpers/app_navigation.dart';
 import 'package:flutter_technical_task/utils/ui/common_views.dart';
 import 'package:lottie/lottie.dart';
-import 'package:sizer/sizer.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -44,25 +44,25 @@ class _SplashScreenState extends State<SplashScreen> {
             children: [
               Lottie.asset(
                 splashLottie,
-                width: 60.w,
-                height: 60.w,
+                width: AppSize.splashLottieWidth,
+                height: AppSize.splashLottieHeight,
                 fit: BoxFit.contain,
               ),
 
-              SizedBox(height: 2.h),
+              SizedBox(height: AppSize.spaceAfterLottie),
 
               CommonViews().customText(
                 textContent: 'Shoply',
-                fontSize: 22.sp,
+                fontSize: AppSize.splashTitleSize,
                 fontWeight: FontWeight.w700,
                 textColor: AppColors.primaryColor,
               ),
 
-              SizedBox(height: 0.5.h),
+              SizedBox(height: AppSize.spaceBetweenTitleAndSubtitle),
 
               CommonViews().customText(
                 textContent: 'Smart Shopping Experience',
-                fontSize: 11.sp,
+                fontSize: AppSize.splashSubTitleSize,
                 textColor: AppColors.textSecondary,
               ),
             ],

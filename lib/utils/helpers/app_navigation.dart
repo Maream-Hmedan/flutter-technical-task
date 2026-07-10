@@ -1,63 +1,83 @@
 import 'package:flutter/material.dart';
 
 class AppNavigator<T> {
-  final BuildContext context;
-  bool rootNav = false;
-
   AppNavigator.of(
-    this.context, {
-    bool rootNavigator = false,
-  }) {
+      this.context, {
+        bool rootNavigator = false,
+      }) : rootNav = rootNavigator {
     FocusManager.instance.primaryFocus?.unfocus();
-    rootNav = rootNavigator;
   }
 
-  final int _delay = 500;
+  final BuildContext context;
+  final bool rootNav;
 
-  Future<T?> push(Widget child) {
-    return Navigator.of(context, rootNavigator: rootNav)
-        .push(PageRouteBuilder(
-      pageBuilder: (_, __, ___) => child,
-      transitionDuration: Duration(milliseconds: _delay),
-      transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
-    ));
-  }
+  static const Duration _transitionDuration = Duration(
+    milliseconds: 500,
+  );
 
-  Future<T?> pushReplacement(Widget child) {
-    return Navigator.of(context, rootNavigator: rootNav)
-        .pushReplacement(PageRouteBuilder(
-      pageBuilder: (_, __, ___) => child,
-      transitionDuration: Duration(milliseconds: _delay),
-      transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
-    ));
-  }
-
-  Future<T?> pushReplacementNamed(String route) {
-    return Navigator.of(context, rootNavigator: rootNav)
-        .pushReplacementNamed(route);
-  }
-
-  Future<T?> pushAndRemoveUntil(Widget child) {
-    return Navigator.of(context, rootNavigator: rootNav).pushAndRemoveUntil(
-      PageRouteBuilder(
-        pageBuilder: (_, __, ___) => child,
-        transitionDuration: Duration(milliseconds: _delay),
-        transitionsBuilder: (_, a, __, c) =>
-            FadeTransition(opacity: a, child: c),
-      ),
-      (route) => false,
+  PageRouteBuilder<T> _fadeRoute(Widget child) {
+    return PageRouteBuilder<T>(
+      pageBuilder: (_, _, _) => child,
+      transitionDuration: _transitionDuration,
+      reverseTransitionDuration: _transitionDuration,
+      transitionsBuilder: (_, animation, _, page) {
+        return FadeTransition(
+          opacity: animation,
+          child: page,
+        );
+      },
     );
   }
 
-  void pop([result]) {
-    Navigator.of(context, rootNavigator: rootNav).pop(result);
+  Future<T?> push(Widget child) {
+    return Navigator.of(
+      context,
+      rootNavigator: rootNav,
+    ).push<T>(_fadeRoute(child));
+  }
+
+  Future<T?> pushReplacement(Widget child) {
+    return Navigator.of(
+      context,
+      rootNavigator: rootNav,
+    ).pushReplacement<T, T>(_fadeRoute(child));
+  }
+
+  Future<T?> pushReplacementNamed(String route) {
+    return Navigator.of(
+      context,
+      rootNavigator: rootNav,
+    ).pushReplacementNamed<T, T>(route);
+  }
+
+  Future<T?> pushAndRemoveUntil(Widget child) {
+    return Navigator.of(
+      context,
+      rootNavigator: rootNav,
+    ).pushAndRemoveUntil<T>(
+      _fadeRoute(child),
+          (_) => false,
+    );
+  }
+
+  void pop([T? result]) {
+    Navigator.of(
+      context,
+      rootNavigator: rootNav,
+    ).pop<T>(result);
   }
 
   bool canPop() {
-    return Navigator.of(context, rootNavigator: rootNav).canPop();
+    return Navigator.of(
+      context,
+      rootNavigator: rootNav,
+    ).canPop();
   }
 
-  Future<bool> maybePop([result]) async {
-    return await Navigator.of(context, rootNavigator: rootNav).maybePop(result);
+  Future<bool> maybePop([T? result]) {
+    return Navigator.of(
+      context,
+      rootNavigator: rootNav,
+    ).maybePop<T>(result);
   }
 }

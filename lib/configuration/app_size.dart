@@ -1,42 +1,50 @@
-// import 'package:sizer/sizer.dart';
-//
-// class AppSize {
-//   //General
-//   static double get pagePadding => 6.w;
-//   static double get pagePaddingContinue => 6.w;
-//   static  double get heightBetweenWidget => 1.5.h;
-//   //Splash
-//   static double get imageLogoWidth => 60.w;
-//   static double get imageLogoHeight => 60.w;
-//   //Settings
-//   static double get settingsImageHeight => 30.h;
-//   static double get settingsImageWidth => 100.w;
-//
-//   // Continue
-//   static double get imageContinueHeight => 40.w;
-//   static double get imageContinueWidth => 40.w;
-//   static double get image2ContinueHeight =>29.h;
-//   static double get image2ContinueWidth => 70.w;
-//   static double get sizeTitle => 17.sp;
-//   static double get heightBetweenTextAndElse => 2.h;
-//   static double get heightBetweenTowButton => 4.h;
-//
-//
-//  // SignUp LogIn
-//   static double get heightBetweenTextFieldAndErrorMassage => 3.h;
-//   static double get heightBetweenTextFieldAndLabel => 2;
-//   static double get heightLogoAndTextLogInSignUp => 1.h;
-//   static double get mainSizeTitle => 19.sp;
-//   static double get heightBetweenTextField => 1.5.h;
-//   static double get subSizeTitleSignInLogIn => 12.sp;
-//   static double get heightBetweenElseAndButton => 3.h;
-//
-//   //Button
-//   static double get mainButtonSizeTitle => 17.sp;
-//   static double get radiusButtonSignInSignUp => 20;
-//
-//   //Home Screen
-//   static double get promotionalSliderHeight => 20.h;
-//   static double get promotionalSliderWidth => 100.w;
-//
-// }
+import 'package:sizer/sizer.dart';
+
+class AppSize {
+  AppSize._();
+  // General
+  static double get pagePadding => 5.w;
+  static double get smallSpacing => 1.h;
+  static double get mediumSpacing => 2.h;
+  static double get largeSpacing => 3.h;
+  // Splash
+  static double get splashLottieWidth => 60.w;
+  static double get splashLottieHeight => 60.w;
+  static double get splashTitleSize => 22.sp;
+  static double get splashSubTitleSize => 11.sp;
+  static double get spaceAfterLottie => 2.h;
+  static double get spaceBetweenTitleAndSubtitle => 0.5.h;
+
+  // Home
+  static double get homeTopSpacing => 1.5.h;
+  static double get sliderHorizontalPadding => 1.w;
+  static double get promotionalSliderHeight => 20.h;
+  static double get promotionalSliderRadius => 16.sp;
+  static double get promotionalSliderViewport => 0.88;
+
+  static double get sliderDotsSpacing => 1.5.h;
+  static double get sliderDotSize => 0.8.h;
+
+  // Text
+  static double get smallText => 10.sp;
+  static double get bodyText => 12.sp;
+  static double get mediumText => 14.sp;
+  static double get titleText => 17.sp;
+  static double get largeTitleText => 21.sp;
+
+  // Buttons
+  static double get buttonHeight => 6.5.h;
+  static double get buttonRadius => 12.sp;
+
+  // Product card
+  static double get productImageHeight => 18.h;
+  static double get productCardRadius => 14.sp;
+
+  // Bottom navigation
+  static double get bottomNavRadius => 18.sp;
+  static double get bottomNavIconSize => 20.sp;
+
+  // Indicators
+  static double get indicatorSize => 0.8.h;
+  static double get activeIndicatorWidth => 6.w;
+}

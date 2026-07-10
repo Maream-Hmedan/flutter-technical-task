@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_technical_task/configuration/app_colors.dart';
-import 'package:flutter_technical_task/screens/splash/splash.dart';
+import 'package:flutter_technical_task/screens/splash/splash_screen.dart';
 import 'package:sizer/sizer.dart';
 
 Future<void> main() async {
