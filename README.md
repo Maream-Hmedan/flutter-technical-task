@@ -38,7 +38,7 @@ Flutter technical task for a product catalog and shopping cart application.
 
 | Add to Favorites | Favorites |
 | ---------------- | --------- |
-| <img src="screenshots/add_fav_home.jpeg" width="250"> | <img src="screenshots/favorite.jpeg" width="250"> |
+| <img src="screenshots/add_fav_home.jpeg" width="250"> | <img src="screenshots/favarite.jpeg" width="250"> |
 
 ### Empty Favorites & Product Details
 
