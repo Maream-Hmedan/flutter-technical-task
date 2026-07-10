@@ -1,17 +1,59 @@
-# flutter_technical_task
+# Shoply
 
-Flutter Technical Task for a Product Catalog and Shopping Cart application.
+Flutter technical task for a product catalog and shopping cart application.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- Display products
+- Search products
+- Product details
+- Add and remove favorites
+- Save favorites using SharedPreferences
+- Add products to cart
+- Increase and decrease quantity
+- Remove products from cart
+- Clear cart
+- Calculate total price
+- Save cart data using SQLite
+- Responsive UI
 
-A few resources to get you started if this is your first Flutter project:
+## Technologies Used
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+- Flutter
+- Dart
+- Provider
+- SQLite (sqflite)
+- SharedPreferences
+- REST API
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Screenshots
+
+### Splash & Home
+
+| Splash | Home |
+| ------ | ---- |
+| <img src="screenshots/splash.jpeg" width="250"> | <img src="screenshots/home.jpeg" width="250"> |
+
+### Favorites
+
+| Add to Favorites | Favorites |
+| ---------------- | --------- |
+| <img src="screenshots/add_fav_home.jpeg" width="250"> | <img src="screenshots/favorite.jpeg" width="250"> |
+
+### Empty Favorites & Product Details
+
+| Empty Favorites | Product Details |
+| ---------------- | --------------- |
+| <img src="screenshots/favorite_empty.jpeg" width="250"> | <img src="screenshots/product_details.jpeg" width="250"> |
+
+### Cart
+
+| Add to Cart | Cart |
+| ----------- | ---- |
+| <img src="screenshots/add_cart.jpeg" width="250"> | <img src="screenshots/cart.jpeg" width="250"> |
+
+### Empty Cart & Clear Cart
+
+| Empty Cart | Clear Cart |
+| ---------- | ---------- |
+| <img src="screenshots/cart_empty.jpeg" width="250"> | <img src="screenshots/cart_clear.jpeg" width="250"> |
