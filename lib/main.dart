@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_technical_task/configuration/app_colors.dart';
+import 'package:flutter_technical_task/screens/cart/controller/cart_controller.dart';
+import 'package:flutter_technical_task/screens/cart/repository/cart_repository.dart';
 import 'package:flutter_technical_task/screens/product/controller/product_controller.dart';
 import 'package:flutter_technical_task/screens/product/repository/product_repository.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -39,6 +41,17 @@ class MyApp extends StatelessWidget {
 
                 controller.loadFavorites();
                 controller.getProducts();
+
+                return controller;
+              },
+            ),
+            ChangeNotifierProvider<CartController>(
+              create: (_) {
+                final CartController controller = CartController(
+                  repository: CartRepository(),
+                );
+
+                controller.loadCart();
 
                 return controller;
               },

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_technical_task/configuration/app_assets.dart';
 import 'package:flutter_technical_task/configuration/app_colors.dart';
 import 'package:flutter_technical_task/configuration/app_size.dart';
+import 'package:flutter_technical_task/screens/cart/controller/cart_controller.dart';
 import 'package:flutter_technical_task/screens/home/widgets/home_carousel_slider.dart';
 import 'package:flutter_technical_task/screens/home/widgets/home_search_field.dart';
 import 'package:flutter_technical_task/screens/product/controller/product_controller.dart';
@@ -100,20 +101,59 @@ class HomeScreen extends StatelessWidget {
             childAspectRatio: 0.62,
           ),
           itemBuilder: (context, index) {
-            final ProductResponse product = controller.filteredProducts[index];
+            final ProductResponse product =
+            controller.filteredProducts[index];
 
-            return _buildProductCard(
-              product: product,
-              isFavorite: controller.isFavorite(product.id),
-              onCardTap: () {
-                AppNavigator.of(context).push(
-                  ProductDetailsScreen(product: product),
+            return Consumer<CartController>(
+              builder: (context, cartController, child) {
+                final bool isInCart =
+                cartController.isProductInCart(product.id);
+
+                return _buildProductCard(
+                  product: product,
+                  isFavorite: controller.isFavorite(product.id),
+                  isInCart: isInCart,
+                  onCardTap: () {
+                    AppNavigator.of(context).push(
+                      ProductDetailsScreen(product: product),
+                    );
+                  },
+                  onFavoriteTap: () {
+                    controller.toggleFavorite(product.id);
+                  },
+                  onAddToCart: () async {
+                    if (isInCart) return;
+
+                    try {
+                      await cartController.addProduct(product);
+
+                      if (!context.mounted) return;
+
+                      ScaffoldMessenger.of(context)
+                        ..hideCurrentSnackBar()
+                        ..showSnackBar(
+                          const SnackBar(
+                            content: Text('Product added to cart'),
+                            behavior: SnackBarBehavior.floating,
+                          ),
+                        );
+                    } catch (error) {
+                      debugPrint('Add to cart error: $error');
+
+                      if (!context.mounted) return;
+
+                      ScaffoldMessenger.of(context)
+                        ..hideCurrentSnackBar()
+                        ..showSnackBar(
+                          const SnackBar(
+                            content: Text('Unable to add product to cart'),
+                            behavior: SnackBarBehavior.floating,
+                          ),
+                        );
+                    }
+                  },
                 );
               },
-              onFavoriteTap: () {
-                controller.toggleFavorite(product.id);
-              },
-              onAddToCart: () {},
             );
           },
         );
@@ -234,6 +274,7 @@ class HomeScreen extends StatelessWidget {
   Widget _buildProductCard({
     required ProductResponse product,
     required bool isFavorite,
+    required bool isInCart,
     required VoidCallback onCardTap,
     required VoidCallback onFavoriteTap,
     required VoidCallback onAddToCart,
@@ -306,31 +347,35 @@ class HomeScreen extends StatelessWidget {
               textColor: AppColors.primaryColor,
             ),
             SizedBox(height: AppSize.smallSpacing),
-            CommonViews().customButton(
-              height: 5.h,
-              borderRadius: 10,
-              padding: EdgeInsets.symmetric(
-                horizontal: 2.w,
-                vertical: 0.8.h,
-              ),
-              onTap: onAddToCart,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.shopping_cart_outlined,
-                    size: 17.sp,
-                    color: AppColors.whiteColor,
-                  ),
-                  SizedBox(width: 1.5.w),
-                  CommonViews().customText(
-                    textContent: 'Add to Cart',
-                    fontSize: AppSize.mediumText,
-                    fontWeight: FontWeight.w600,
-                    textColor: AppColors.whiteColor,
-                  ),
-                ],
-              ),
+      CommonViews().customButton(
+        height: 5.h,
+        borderRadius: 10,
+        padding: EdgeInsets.symmetric(
+          horizontal: 2.w,
+          vertical: 0.8.h,
+        ),
+        onTap: isInCart ? () {} : onAddToCart,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              isInCart
+                  ? Icons.check_circle_outline
+                  : Icons.shopping_cart_outlined,
+              size: 17.sp,
+              color: AppColors.whiteColor,
+            ),
+            SizedBox(width: 1.5.w),
+            CommonViews().customText(
+              textContent: isInCart
+                  ? 'Added'
+                  : 'Add to Cart',
+              fontSize: AppSize.mediumText,
+              fontWeight: FontWeight.w600,
+              textColor: AppColors.whiteColor,
+            ),
+          ],
+        ),
             ),
           ],
         ),

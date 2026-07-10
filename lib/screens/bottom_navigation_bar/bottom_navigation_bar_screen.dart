@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_technical_task/configuration/app_colors.dart';
-import 'package:flutter_technical_task/screens/cart/cart_screen.dart';
+import 'package:flutter_technical_task/screens/cart/view/cart_screen.dart';
 import 'package:flutter_technical_task/screens/favorites/favorite_screen.dart';
 import 'package:flutter_technical_task/screens/home/home_screen.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
