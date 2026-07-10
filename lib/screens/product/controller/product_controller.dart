@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_technical_task/configuration/constant_values.dart';
 import 'package:flutter_technical_task/screens/product/model/product_response.dart';
 import 'package:flutter_technical_task/screens/product/repository/product_repository.dart';
+import 'package:flutter_technical_task/utils/helpers/general.dart';
 
 enum ApiStatus { loading, empty, error, success }
 
@@ -14,6 +16,7 @@ class ProductController extends ChangeNotifier {
 
   List<ProductResponse> products = [];
   List<ProductResponse> filteredProducts = [];
+  final Set<int> favoriteIds = <int>{};
 
   String errorMessage = '';
   String searchQuery = '';
@@ -82,5 +85,46 @@ class ProductController extends ChangeNotifier {
     filteredProducts = products.where((product) {
       return product.title.toLowerCase().contains(query);
     }).toList();
+  }
+
+  Future<void> loadFavorites() async {
+    final List<String> savedIds = await General.getPrefStringList(
+      ConstantValues.favoriteProductIds,
+    );
+
+    favoriteIds
+      ..clear()
+      ..addAll(
+        savedIds.map(int.parse),
+      );
+
+    notifyListeners();
+  }
+
+  bool isFavorite(int productId) {
+    return favoriteIds.contains(productId);
+  }
+
+  List<ProductResponse> get favoriteProducts {
+    return products
+        .where(
+          (product) => favoriteIds.contains(product.id),
+    )
+        .toList();
+  }
+
+  Future<void> toggleFavorite(int productId) async {
+    if (favoriteIds.contains(productId)) {
+      favoriteIds.remove(productId);
+    } else {
+      favoriteIds.add(productId);
+    }
+
+    await General.savePrefStringList(
+      ConstantValues.favoriteProductIds,
+      favoriteIds.map((id) => id.toString()).toList(),
+    );
+
+    notifyListeners();
   }
 }

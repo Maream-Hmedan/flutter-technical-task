@@ -104,14 +104,15 @@ class HomeScreen extends StatelessWidget {
 
             return _buildProductCard(
               product: product,
+              isFavorite: controller.isFavorite(product.id),
               onCardTap: () {
                 AppNavigator.of(context).push(
-                  ProductDetailsScreen(
-                    product: product,
-                  ),
+                  ProductDetailsScreen(product: product),
                 );
               },
-              onFavoriteTap: () {},
+              onFavoriteTap: () {
+                controller.toggleFavorite(product.id);
+              },
               onAddToCart: () {},
             );
           },
@@ -232,18 +233,26 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildProductCard({
     required ProductResponse product,
+    required bool isFavorite,
     required VoidCallback onCardTap,
     required VoidCallback onFavoriteTap,
     required VoidCallback onAddToCart,
   }) {
     return InkWell(
       onTap: onCardTap,
+      borderRadius: BorderRadius.circular(
+        AppSize.productCardRadius,
+      ),
       child: Container(
         padding: EdgeInsets.all(2.5.w),
         decoration: BoxDecoration(
           color: AppColors.whiteColor,
-          borderRadius: BorderRadius.circular(AppSize.productCardRadius),
-          border: Border.all(color: AppColors.borderColor),
+          borderRadius: BorderRadius.circular(
+            AppSize.productCardRadius,
+          ),
+          border: Border.all(
+            color: AppColors.borderColor,
+          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -256,9 +265,7 @@ class HomeScreen extends StatelessWidget {
                 radius: 10,
               ),
             ),
-
             SizedBox(height: AppSize.smallSpacing),
-
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -272,17 +279,19 @@ class HomeScreen extends StatelessWidget {
                     textColor: AppColors.textPrimary,
                   ),
                 ),
-
                 SizedBox(width: 1.w),
-
                 InkWell(
                   borderRadius: BorderRadius.circular(20.sp),
                   onTap: onFavoriteTap,
                   child: Padding(
                     padding: EdgeInsets.all(0.5.h),
                     child: Icon(
-                      Icons.favorite_border_rounded,
-                      color: AppColors.textSecondary,
+                      isFavorite
+                          ? Icons.favorite_rounded
+                          : Icons.favorite_border_rounded,
+                      color: isFavorite
+                          ? AppColors.favoriteColor
+                          : AppColors.textSecondary,
                       size: 19.sp,
                     ),
                   ),
@@ -300,7 +309,10 @@ class HomeScreen extends StatelessWidget {
             CommonViews().customButton(
               height: 5.h,
               borderRadius: 10,
-              padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.8.h),
+              padding: EdgeInsets.symmetric(
+                horizontal: 2.w,
+                vertical: 0.8.h,
+              ),
               onTap: onAddToCart,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,

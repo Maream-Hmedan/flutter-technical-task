@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_technical_task/configuration/app_colors.dart';
 import 'package:flutter_technical_task/screens/product/controller/product_controller.dart';
 import 'package:flutter_technical_task/screens/product/repository/product_repository.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_technical_task/screens/splash/splash_screen.dart';
 import 'package:sizer/sizer.dart';
@@ -31,9 +32,16 @@ class MyApp extends StatelessWidget {
         return MultiProvider(
           providers: [
             ChangeNotifierProvider<ProductController>(
-              create: (_) => ProductController(
-                repository: ProductRepository(),
-              )..getProducts(),
+              create: (_) {
+                final ProductController controller = ProductController(
+                  repository: ProductRepository(),
+                );
+
+                controller.loadFavorites();
+                controller.getProducts();
+
+                return controller;
+              },
             ),
           ],
           child: MaterialApp(
@@ -45,6 +53,7 @@ class MyApp extends StatelessWidget {
               colorScheme: ColorScheme.fromSeed(
                 seedColor: AppColors.primaryColor,
               ),
+              textTheme: GoogleFonts.poppinsTextTheme(),
               appBarTheme: const AppBarTheme(
                 backgroundColor: AppColors.backgroundColor,
                 elevation: 0,
